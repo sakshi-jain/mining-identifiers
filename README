@@ -1,0 +1,88 @@
+DOCUMENTATION:
+This code works takes as input network traces and outputs a list of potential
+identifier strings for each user in the network.
+
+AUTHORS:
+Sakshi Jain: sakshi.jain@berkeley.edu
+Mobin Javed: mobin@cs.berkeley.edu
+Vern Paxson: vern@berkeley.edu
+
+---------------
+Pre-requisites
+---------------
+
+- Bro to extract the contents of TCP connections from the raw network traces.
+  You can download and install it from Bro website [1].
+
+- Python version > 2.7 (Some modules used in the code are only present in
+  versions > 2.7)
+
+--------------
+Pre-processing
+--------------
+
+Configure the following variables in src/config.py:
+
+    INPUT_NETWORK_TRACES        Path to network traces [Should contain one trace file per day]
+    TRACE_SUFFIX                Suffix for trace files [For example, ".pcap",
+                                ".trace"]
+    TRACE_TO_DAY_MAPPING        Path to a tab-separated file containing
+                                mappings of trace names to day numbers [Number
+                                days as day_1, day_2,...]
+    LOCAL_SUBNET                Subnet of the local network on which network traffic was
+                                collected 
+    BRO_PATH                    Path to Bro installation
+    ALL_CONTENT                 Output path to store TCP payloads extracted from traces
+    MAIN_OUTPUT_PATH            Output path to store all intermediary crunches
+                                as well as the final set of identifiers with context
+
+Run prepdata.py as:
+    $ cd preprocessing
+    $ python prepdata.py
+
+    prepdata.py extracts TCP payloads from network traces using Bro, and
+    reorganizes the data into per-user directories, each having per-day
+    subdirectories.
+
+        - Each IP address in the LOCAL_SUBNET is considered a separate user. The
+          directories for the users are named numerically and the mapping file is
+          stored in PARENT_CONTENT_FOLDER.  Note that if your network contains
+          NATs, please use NAT/DHCP logs to further split data of individual users
+          behind NAT into their corresponding directories. 
+
+        - The contents for each day are stored in a sub-directory named after the
+          mapping provided in the TRACE_TO_DAY_MAPPING file. 
+
+---------
+Filtering
+---------
+
+Run filtering code as:
+  $ cd ../filtering
+  $ python filtering.py --run all --compress --printable_only
+  $ python context_filtering.py
+
+    filtering.py takes as input all the content files and applies connection
+    and string based filtering. The output is a set of identifiers with built
+    context. 
+    
+    context_filtering.py applies context based filtering, namely removing
+    identifiers in Cookie and Path along with identifiers occurring for less
+    than 3 days. The final output is saved in '$MAIN_OUTPUT_PATH/identifiers_with_context'.
+    The contents of this folder need to be manually analyzed by an analyst to find
+    interesting identifiers detected by our methodology.
+
+--------------------
+Analyzing the output
+--------------------
+
+The folder '$MAIN_OUTPUT_PATH/identifiers_with_context' contains one context
+file per user.  Each entry in a context file corresponds to a line (i.e.,
+delineated by newlines) from the original content file, with the reconstructed
+identifier string(s) highlighted. For reference, the path to the original
+content file in which the identifier string was found is also printed in the
+context file. In order to view the highlighted file use the command
+"less -r <filename>"
+
+
+[1] https://www.bro.org/downloads/release/bro-2.4.1.tar.gz

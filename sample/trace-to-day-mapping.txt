@@ -1,0 +1,6 @@
+trace_1_filename.trace  day_1
+trace_2_filename.trace  day_2
+trace_3_filename.trace  day_3
+trace_4_filename.trace  day_4
+trace_5_filename.trace  day_5
+trace_6_filename.trace  day_6
