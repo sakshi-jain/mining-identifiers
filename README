@@ -17,6 +17,9 @@ Pre-requisites
 - Python version > 2.7 (Some modules used in the code are only present in
   versions > 2.7)
 
+- Maximum number of open files allowed by the system > 300.
+  (On Mac OSX, you can set this using the command $ulimit -n 300)
+
 --------------
 Pre-processing
 --------------
