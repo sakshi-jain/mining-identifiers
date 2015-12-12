@@ -42,7 +42,7 @@ def check_unique_server(servers, fname):
     if servers == False:
         return True
     for server in servers:
-        if fname.find(server) != -1:
+        if fname.find(str(server) + ":") != -1:
             return False
     return True
 
@@ -59,17 +59,6 @@ def check_host(fname):
 
 
 
-def checkCookie(fname, contents_path):
-    return True
-    filepath = path.join(contents_path, 'data/cookieConn')
-    data = [line.strip().split('\t') for line in open(filepath, 'r')]
-    for conn in data:
-        if fname.find(conn[0]) != -1 and fname.find(conn[1]) != -1:
-                return False
-    return True
-
-
-
 def check_encryption(fname):
     '''
     Return True if unencrypted
@@ -83,8 +72,10 @@ def check_encryption(fname):
 
 
 def check_connection_filters(unique_servers, fname, contents_path):
-    return (check_encryption(fname) and check_host(fname) and check_unique_server(unique_servers, fname) and checkCookie(fname, contents_path))
-
+    encryption_bool = check_encryption(fname)
+    host_bool = check_host(fname)
+    unique_server_bool = check_unique_server(unique_servers, fname)
+    return (encryption_bool and host_bool and unique_server_bool)
 
 ##############################################################################
 
@@ -202,7 +193,6 @@ def get_id_to_content(userID, dayID, file_list):
 
 
 def main(contents_path = './', userID = 0, dayID = 0, unique_servers = False):
-
     files_list = get_content_files(unique_servers, contents_path)
     mapping = get_id_to_content(userID, dayID, files_list)
 
