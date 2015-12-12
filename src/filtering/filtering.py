@@ -207,7 +207,6 @@ def main():
         host_count = 0
         ref_count = 0
         for userID, filepath in enumerate(user_paths):
-            print userID, filepath
             host, ref =  get_metadata.main(userID, filepath)
             host_count += host
             ref_count += ref
