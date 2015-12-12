@@ -25,7 +25,6 @@ import config
 
 
 def get_user_fields(path):
-    # print path
     fields = ['orig_h', 'orig_p', 'resp_h', 'resp_p']  # , 'cookie']
     outputList = []
     connFile = open(join(path, 'conn.log'))
@@ -49,8 +48,6 @@ def unique_elements(lsts):
         result.append(lst - common)
     return result
 
-
-# print result
 
 def ensure_dir(f):
     d = dirname(f)
@@ -91,7 +88,6 @@ def get_unique_servers(user_paths):
 
 
 if __name__ == '__main__':
-    # pathList = readPaths()
     pass
 
 
