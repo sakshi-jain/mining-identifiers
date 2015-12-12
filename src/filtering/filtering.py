@@ -99,7 +99,20 @@ def parseArguments(args):
         raise Exception('Unknown command line option.')
 
 
-def get_day_list(sample_path):
+# def get_day_list(sample_path):
+#     '''
+#     Computes the list of days for the users in dataset
+#     :param sample_path: data path of one of the users
+#     :return: list of names of day based folders
+#     '''
+#
+#     return_list = []
+#     for day in listdir(sample_path):
+#         if re.match('day_*', day) != None:
+#             return_list.append(day)
+#     return return_list
+
+def get_day_list(mapping_file):
     '''
     Computes the list of days for the users in dataset
     :param sample_path: data path of one of the users
@@ -107,10 +120,12 @@ def get_day_list(sample_path):
     '''
 
     return_list = []
-    for day in listdir(sample_path):
-        if re.match('day_*', day) != None:
+    with open(mapping_file) as fopen:
+        for line in fopen:
+            trace, day = line.strip().split("\t")
             return_list.append(day)
     return return_list
+
 
 def main():
     user_paths = readPaths()
@@ -124,7 +139,7 @@ def main():
         server_functions.get_unique_servers(user_paths)
         logging.info('Done getting unique servers : ' + str(datetime.now()))
 
-        day_list = get_day_list(user_paths[0])
+        day_list = get_day_list(config.TRACE_TO_DAY_MAPPING)
 
         for day in day_list:
             dayID = day.split('_')[1]
