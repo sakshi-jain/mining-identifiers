@@ -50,11 +50,11 @@ FILE_SIZE_THRESHOLD = 50*(10**6) #50 MB
 MASTER_PATH = path.join(MAIN_OUTPUT_PATH, 'intermediary_crunch/')
 
 # File where paths to all individual user data is saved
-DATA_PATHS = path.join(MAIN_OUTPUT_PATH, '/dataPaths.sample')
+DATA_PATHS = path.join(MAIN_OUTPUT_PATH, 'dataPaths.sample')
 
 # Path where the output of connection and string based filtering is saved.
 # This folder contains identifiers with the associated context
-CONTEXT_FOLDER = path.join(MAIN_OUTPUT_PATH, '/user_data_recrunch/')
+CONTEXT_FOLDER = path.join(MAIN_OUTPUT_PATH, 'user_data_recrunch/')
 
 # Prefix for each type of filtering output
 
@@ -79,9 +79,9 @@ AFT_PERSISTENCE_FILT = 'dfilt_'
 AFT_UNIQUENESS_FILT = 'cfilt_'
 
 # Path to the output of "Cookie and Path" filteting
-CONTEXT_FILTERED = path.join(MAIN_OUTPUT_PATH, '/context_filtered')
+CONTEXT_FILTERED = path.join(MAIN_OUTPUT_PATH, 'context_filtered')
 
 # Final output path containing identifiers with their context. The analyst
 # must look at this folder for final set of selected identifiers to be used for
 # manual analysis
-CONTEXT_FILTERED_PERSISTENCE = path.join(MAIN_OUTPUT_PATH, '/identifiers_with_context')
+CONTEXT_FILTERED_PERSISTENCE = path.join(MAIN_OUTPUT_PATH, 'identifiers_with_context')
